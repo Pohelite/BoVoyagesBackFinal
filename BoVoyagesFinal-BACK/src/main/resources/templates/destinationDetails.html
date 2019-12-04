@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleag.org">
+<head>
+<meta charset="UTF-8">
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+<title>BoVoyages Back</title>
+</head>
+<body>
+	<img width="300" src="${src}" th:src="${thsrc}">
+	<h1 th:text="${destination.region}"></h1>
+	
+<!-- 	<form action="/images" method="POST" enctype="multipart/form-data"> -->
+<!-- 		<input type="hidden" th:value="*{destination.id}" name="idDest" -->
+<!-- 			id="idDest"> <input type="file" name="file" id="file"> -->
+<!-- 		<button class="btn btn-primary" type="submit">Ajouter image</button> -->
+<!-- 	</form> -->
+	
+	<form action="/images" method="POST" enctype="multipart/form-data">
+		<input type="hidden" th:value="*{destination.id}" name="idDest"
+			id="idDest">
+		<button class="btn btn-primary" type="submit">Go to upload</button>
+	</form>
+
+	<form th:action="@{destinationUpdateDescription}" method="Post">
+		<textarea class="form-control" th:text="${destination.description}"
+			name="description" id="description"></textarea>
+		<input type="hidden" th:value="*{destination.id}" name="idDest"
+			id="idDest">
+		<button class="btn btn-primary" type="submit">Modifier
+			description</button>
+	</form>
+	<br>
+	<h2>
+		Dates disponibles au <span
+			th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"
+			name="today" id="today"></span>
+	</h2>
+
+	<table class="table">
+		<tr>
+			<th scope="col">Date Aller</th>
+			<th scope="col">Date Retour</th>
+			<th scope="col">Nombre de places</th>
+			<th scope="col">Prix HT (€)</th>
+			<th scope="col">Promo</th>
+		</tr>
+		</thead>
+		<th:block th:each="date : ${dates}">
+			<div>
+				<form th:action="@{destinationDateUpdate}" method="Post">
+					<tr>
+						<td><input class="form-control"
+							th:value="${#dates.format(date.dateAller, 'dd/MM/yyyy HH:mm')}"
+							name="dateAller" id="dateAller"></td>
+						<td><input class="form-control"
+							th:value="${#dates.format(date.dateRetour, 'dd/MM/yyyy HH:mm')}"
+							name="dateRetour" id="dateRetour"></td>
+						<td><input class="form-control" th:value="${date.nbrePlaces}"
+							name="nbrePlaces" id="nbrePlaces"></td>
+						<td><input class="form-control" th:value="${date.prixHT}"
+							name="prixHT" id="prixHT"></td>
+						<td><input class="form-control" th:value="${date.promo}"
+							name="promo" id="promo"></td>
+						<td><input type="hidden" th:value="*{date.id}" name="idDate"
+							id="idDate"> <input type="hidden"
+							th:value="*{destination.id}" name="idDest" id="idDest">
+							<button class="btn btn-primary" type="submit">Modifier</button></td>
+				</form>
+				<td>
+					<form th:action="@{destinationDateDelete}" method="Post">
+						<input type="hidden" th:value="*{date.id}" name="idDate"
+							id="idDate"> <input type="hidden"
+							th:value="*{destination.id}" name="idDest" id="idDest">
+						<button class="btn btn-primary" type="submit">Supprimer</button>
+					</form>
+				</td>
+				</tr>
+
+			</div>
+		</th:block>
+		<tr>
+			<form th:action="@{destinationDateNew}" method="Post">
+			<td><input class="form-control" name="newDateAller"
+				id="newDateAller"></td>
+			<td><input class="form-control" name="newDateRetour"
+				id="newDateRetour"></td>
+			<td><input class="form-control" placeholder="10"
+				name="newNbrePlaces" id="newNbrePlaces"></td>
+			<td><input class="form-control" name="newPrixHT" id="newPrixHT"></td>
+			<td><input class="form-control" name="newPromo" id="newPromo"></td>
+			<td><input type="hidden" th:value="*{destination.id}" name="id"
+				id="id">
+				<button class="btn btn-primary" type="submit">Ajouter Date</button></td>
+			</form>
+		</tr>
+	</table>
+</body>
+</html>
