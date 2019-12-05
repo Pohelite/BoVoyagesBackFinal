@@ -2,21 +2,62 @@
 <html xmlns:th="http://thymeleag.org">
 <head>
 <meta charset="UTF-8">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <title>BoVoyages Back</title>
 </head>
 <body>
 
-<form th:action="@{/connexion}" th:object="${commercial}" method="post">
-  <div class="form-group">
-    <label for="nom">Username</label>
-    <input class="form-control" th:field="*{username}" id="nom" name="nom">
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input class="form-control" id="password" name="password" type="password">
-  </div>
-  <button type="submit" class="btn btn-primary">Connexion</button>
-</form>
+<!-- <form th:action="@{/connexion}" th:object="${commercial}" method="post"> -->
+<!--   <div class="form-group"> -->
+<!--     <label for="nom">Username</label> -->
+<!--     <input class="form-control" th:field="*{username}" id="nom" name="nom"> -->
+<!--   </div> -->
+<!--   <div class="form-group"> -->
+<!--     <label for="password">Password</label> -->
+<!--     <input class="form-control" id="password" name="password" type="password"> -->
+<!--   </div> -->
+<!--   <button type="submit" class="btn btn-primary">Connexion</button> -->
+<!-- </form> -->
+
+
+<div class="container">
+    <div class="row">
+		<div class="span12">
+			<form class="form-horizontal" method="POST" th:action="@{/connexion}" th:object="${commercial}">
+			  <fieldset>
+			    <div id="legend">
+			      <legend class="">BoVoyages Back Office</legend>
+			    </div>
+			    <div class="control-group">
+			      <!-- Username -->
+			      <label class="control-label"  for="username">Nom d'utilisateur</label>
+			      <div class="controls">
+			        <input type="text" th:field="*{username}" id="nom" name="nom" placeholder="" class="input-xlarge">
+			      </div>
+			    </div>
+			    <div class="control-group">
+			      <!-- Password-->
+			      <label class="control-label" for="password">Mot de passe</label>
+			      <div class="controls">
+			        <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
+			      </div>
+			    </div>
+			    <div class="control-group">
+			      <!-- Button -->
+			      <div class="controls">
+			        <button class="btn btn-success">Login</button>
+			      </div>
+			    </div>
+			  </fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+
 </body>
 </html>
+
+

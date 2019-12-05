@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -59,9 +60,22 @@ public class BoVoyagesRestBack {
 	@Autowired
 	ImageRepository imageRepo;
 
-	@GetMapping("backtodestinations")
+	@GetMapping("/backToDestinations")
 	public String getBacktoDestinationsPage(Model model) {
-		List<Destination> dest = destiRepo.findAll();
+		List<Destination> dest = destiRepo.findAll(Sort.by(Sort.Direction.ASC, "region"));
+		List<Destination> destinations = new ArrayList<Destination>();
+		for (Destination d : dest) {
+			if (d.getDeleted() == 0) {
+				destinations.add(d);
+			}
+		}
+		model.addAttribute("destinations", destinations);
+		return "destinations";
+	}
+	
+	@GetMapping("/getDestinationsByRegionStartingWith")
+	public String getDestinationsByRegionStartingWith(Model model, @RequestParam("search") String search) {
+		List<Destination> dest = destiRepo.getByRegionStartingWithOrderByRegion(search);
 		List<Destination> destinations = new ArrayList<Destination>();
 		for (Destination d : dest) {
 			if (d.getDeleted() == 0) {
@@ -90,7 +104,7 @@ public class BoVoyagesRestBack {
 			String baseHashAndSalt = comRepo.getCommercialSaltedHash(commercial.getUsername());
 			if (calculatedHashPlusSalt.equals(baseHashAndSalt)) {
 				model.addAttribute("commercial", commercial);
-				List<Destination> dest = destiRepo.findAll();
+				List<Destination> dest = destiRepo.findAll(Sort.by(Sort.Direction.ASC, "region"));
 				List<Destination> destinations = new ArrayList<Destination>();
 				for (Destination d : dest) {
 					if (d.getDeleted() == 0) {
@@ -130,11 +144,13 @@ public class BoVoyagesRestBack {
 			}
 		}
 		model.addAttribute("dates", dates);
-		String image = destination.getImages().get(0).getImage();
-		String src = "..static/images/" + image;
-		String thsrc = "images/" + image;
-		model.addAttribute("src", src);
-		model.addAttribute("thsrc", thsrc);
+		if(destination.getImages().isEmpty()==false) {
+			String image = destination.getImages().get(0).getImage();
+			String src = "..static/images/" + image;
+			String thsrc = "images/" + image;
+			model.addAttribute("src", src);
+			model.addAttribute("thsrc", thsrc);
+		}
 		return "destinationDetails";
 	}
 
